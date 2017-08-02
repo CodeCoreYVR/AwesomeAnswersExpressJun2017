@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {Question} = require('../models');
+const {Question, Answer} = require('../models');
 
 // questions#index PATH: /questions METHOD: GET
 router.get('/', function(req, res, next) {
@@ -40,9 +40,9 @@ router.get('/:id', (req, res, next) => {
   // has params related to the path such as `id`, `question_id`, etc.
   const {id} = req.params;
   Question
-    .findById(id)
+    .findById(id, {include: [ {model: Answer} ] })
     .then(question => {
-      res.render('questions/show', {question});
+      res.render('questions/show', {question, answers: question.Answers});
     })
     // .catch(error => next(error))
     // 👆 👇 are equivalent
