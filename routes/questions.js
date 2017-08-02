@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const {Question, Answer} = require('../models');
+const answers = require('./answers');
 
 // questions#index PATH: /questions METHOD: GET
 router.get('/', function(req, res, next) {
@@ -48,5 +49,8 @@ router.get('/:id', (req, res, next) => {
     // 👆 👇 are equivalent
     .catch(next)
 })
+
+// PATH: /questions/:questionId/answers
+router.use('/:questionId/answers', answers);
 
 module.exports = router;
