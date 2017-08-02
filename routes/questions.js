@@ -56,6 +56,16 @@ router.get('/:id', (req, res, next) => {
     .catch(next)
 })
 
+// questions#destroy
+router.delete('/:id', (req, res, next) => {
+  const {id} = req.params;
+  Question
+    .findById(id)
+    .then(question => question.destroy())
+    .then(() => res.redirect(`/questions`))
+    .catch(next);
+})
+
 // PATH: /questions/:questionId/answers
 router.use('/:questionId/answers', answers);
 
