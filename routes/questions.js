@@ -35,8 +35,32 @@ router.post('/', (req, res, next) => {
     .catch(next)
 });
 
+// questions#edit
+router.get('/:id/edit', (req, res, next) => {
+  const {id} = req.params;
+  Question
+    .findById(id)
+    .then(question => res.render('questions/edit', {question}))
+    .catch(next)
+})
+
+// questions#update
+router.patch('/:id', (req, res, next) => {
+  const {id} = req.params;
+  const {title, content} = req.body;
+
+  Question
+    .findById(id)
+    .then(question => question.update({title, content}))
+    .then(question => res.redirect(`/questions/${id}`))
+    .catch(next);
+});
+
 // questions#show PATH: /questions/:id METHOD: GET
 router.get('/:id', (req, res, next) => {
+  // For more information on how to write, route paths go to:
+  // http://expressjs.com/en/guide/routing.html#route-paths
+
   // To get params from Express, use req.params. It's a property
   // of the request object. It doesn't contain form data. It only
   // has params related to the path such as `id`, `question_id`, etc.
@@ -65,6 +89,7 @@ router.delete('/:id', (req, res, next) => {
     .then(() => res.redirect(`/questions`))
     .catch(next);
 })
+
 
 // PATH: /questions/:questionId/answers
 router.use('/:questionId/answers', answers);
