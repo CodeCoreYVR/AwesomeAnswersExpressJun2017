@@ -13,8 +13,15 @@ module.exports = function(sequelize, DataTypes) {
     }
   }*/);
 
-  Question.associate = (models) => {
-    // associations can be defined here
+  Question.associate = ({Answer}) => {
+    Question.hasMany(Answer);
+
+    // We get the following instance methods from hasMany:
+    // Question#getAnswers
+    // Question#setAnswers
+    // Question#addAnswer
+    // usage:
+    // Question.findById(2).then(question => question.addAnswer(answer))
   };
 
   return Question;
