@@ -6,7 +6,8 @@ const answers = require('./answers');
 // questions#index PATH: /questions METHOD: GET
 router.get('/', function(req, res, next) {
   Question
-    .all()
+    .all({order: [['createdAt', 'DESC'], ['title', 'ASC']]})
+    // SELECT * FROM "Questions" ORDER BY "createdAt" DESC, "title" ASC;
     .then(questions => {
       // To pass a variable to a template, pass
       // an object as a second argument to res.render.
@@ -41,7 +42,12 @@ router.get('/:id', (req, res, next) => {
   // has params related to the path such as `id`, `question_id`, etc.
   const {id} = req.params;
   Question
-    .findById(id, {include: [ {model: Answer} ] })
+    .findById(id, {
+      order: [
+        [Answer, 'createdAt', 'DESC']
+      ],
+      include: [ {model: Answer} ]
+    })
     .then(question => {
       res.render('questions/show', {question, answers: question.Answers});
     })
